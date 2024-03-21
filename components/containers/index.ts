@@ -1,4 +1,4 @@
-export interface Pokemon {
+export type Pokemon = {
     id: number; // Agregar ID único
     nombre: string;
     vida: number;
@@ -11,7 +11,9 @@ export interface PokemonData {
     name: string;
     stats: { stat: { name: string }, base_stat: number }[];
     types: { type: { name: string } }[];
-    sprites: { front_default: string };
+    sprites: {
+        front_default: string;
+    };
 }
 export type CartItem = Pokemon & {
     quantity: number;
