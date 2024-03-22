@@ -7,13 +7,14 @@ import Footer from "../presentations/footer";
 import SearchFilter from "../presentations/SearchFilter";
 import { cartReducer, initialState } from "../containers/reducers/cart-reducer";
 import pokemonDB,{ obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
+import { Pokemon } from "../containers";
 
 function ProductsIndex() {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [filterText, setFilterText] = useState("");
-  const [filteredPokemons, setFilteredPokemons] = useState([]);
+  const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
