@@ -5,7 +5,7 @@ import Product from "../presentations/products";
 import Header from "../presentations/header";
 import Footer from "../presentations/footer";
 import { cartReducer, initialState } from "../containers/reducers/cart-reducer";
-import { obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
+import pokemonDB,{ obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
 
 function ProductsIndex() {
   const [state, dispatch] = useReducer(cartReducer, initialState);
@@ -20,10 +20,9 @@ function ProductsIndex() {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const pokemonData = await obtenerTodosLosPokemon();
-        const totalProducts = pokemonData.length;
+        await obtenerTodosLosPokemon();
+        const totalProducts = pokemonDB.length;
         setTotalPages(Math.ceil(totalProducts / pageSize));
-        dispatch({ type: "remove-from-cart", payload: { id: 10 } });
       } catch (error) {
         console.error("Error al obtener datos de Pokémon:", error);
       }
