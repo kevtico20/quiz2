@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo, Dispatch } from "react";
+import { Dispatch, useMemo, useState } from "react";
 import type { CartItem } from "../containers/index";
 import type { CartActions } from "../containers/reducers/cart-reducer";
 
@@ -22,7 +22,10 @@ export default function Header({ cart, dispatch }: HeaderProps) {
           </div>
           <nav className="md:ml-auto flex mt-5 md:mt-0">
             <div className="text-white ml-10">
-              <Link href={"/products"}>Productos</Link>
+              <Link href={"/products"}>Productos Peliculas</Link>
+            </div>
+            <div className="text-white ml-10">
+              <Link href={"/products"}>Productos Pokemon</Link>
             </div>
             <div className="carrito relative">
               <img

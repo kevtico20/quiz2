@@ -4,44 +4,52 @@ import { useState, useEffect, useReducer } from "react";
 import Product from "../presentations/products";
 import Header from "../presentations/header";
 import Footer from "../presentations/footer";
+import SearchFilter from "../presentations/SearchFilter";
 import { cartReducer, initialState } from "../containers/reducers/cart-reducer";
 import pokemonDB,{ obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
 
 function ProductsIndex() {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+  const [filterText, setFilterText] = useState("");
+  const [filteredPokemons, setFilteredPokemons] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(12); // Cantidad de productos por página
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
   useEffect(() => {
-    async function fetchPokemonData() {
+    async function initialFetch() {
       try {
         await obtenerTodosLosPokemon();
-        const totalProducts = pokemonDB.length;
-        setTotalPages(Math.ceil(totalProducts / pageSize));
+        setFilteredPokemons(pokemonDB); // Inicialmente establecer todos los pokemones
+        setTotalPages(Math.ceil(pokemonDB.length / pageSize));
       } catch (error) {
         console.error("Error al obtener datos de Pokémon:", error);
       }
     }
 
-    fetchPokemonData();
-  }, []);
+    initialFetch();
+  }, []); // Dependencia vacía para correr solo al montar el componente
 
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const handleSearch = async () => {
+    // Filtrar pokemones basado en el texto de búsqueda
+    const filtered = pokemonDB.filter(pokemon =>
+      pokemon.nombre.toLowerCase().includes(filterText.toLowerCase())
+    );
+    setFilteredPokemons(filtered);
+    setTotalPages(Math.ceil(filtered.length / pageSize));
+    setCurrentPage(1); // Restablece a la primera página después de la búsqueda
   };
 
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
+  const handleNextPage = () => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  const handlePrevPage = () => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
 
   const indexOfLastProduct = currentPage * pageSize;
   const indexOfFirstProduct = indexOfLastProduct - pageSize;
-  const currentProducts = state.data.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredPokemons.slice(indexOfFirstProduct, indexOfLastProduct);
 
   return (
     <>
@@ -50,15 +58,20 @@ function ProductsIndex() {
         <h2 className="text-center text-4xl lg:text-5xl font-black uppercase tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-red-500 to-blue-500">
           Galería Artistica
         </h2>
+        <SearchFilter
+          filterText={filterText}
+          setFilterText={setFilterText}
+          onSearch={handleSearch}
+        />
         <div className="flex justify-center">
-        <div className="m-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {currentProducts.map((poke) => (
-              <Product key={poke.id} poke={poke} dispatch={dispatch} />
-            ))}
+          <div className="m-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {currentProducts.map((poke) => (
+                <Product key={poke.id} poke={poke} dispatch={dispatch} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
         <div className="flex justify-center mt-5">
           <button
             onClick={handlePrevPage}
