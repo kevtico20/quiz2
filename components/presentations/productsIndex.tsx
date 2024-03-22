@@ -47,12 +47,18 @@ function ProductsIndex() {
     <>
       <Header cart={state.cart} dispatch={dispatch} />
       <main className="mt-5">
-        <h2 className="text-center">Nuestra Colección</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-5">
-          {currentProducts.map((poke) => (
-            <Product key={poke.id} poke={poke} dispatch={dispatch} />
-          ))}
+        <h2 className="text-center text-4xl lg:text-5xl font-black uppercase tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-red-500 to-blue-500">
+          Galería Artistica
+        </h2>
+        <div className="flex justify-center">
+        <div className="m-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            {currentProducts.map((poke) => (
+              <Product key={poke.id} poke={poke} dispatch={dispatch} />
+            ))}
+          </div>
         </div>
+      </div>
         <div className="flex justify-center mt-5">
           <button
             onClick={handlePrevPage}
