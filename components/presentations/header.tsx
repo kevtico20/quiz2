@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import { Dispatch, useMemo, useState } from "react";
 import type { CartItem } from "../containers/index";
@@ -18,7 +20,7 @@ export default function Header({ cart, dispatch }: HeaderProps) {
       <div className="container">
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
-           <Link className="text-white" href={"/"}>Inicio</Link>
+           <a className="text-white" href={"/"}>  Inicio</a>
           </div>
           <nav className="md:ml-auto flex mt-5 md:mt-0">
             <div className="text-white ml-10">
