@@ -15,14 +15,19 @@ export interface PokemonData {
         front_default: string;
     };
 }
-export type CartItem = Pokemon & {
-    quantity: number;
-}
 
-// export type CartItem = Pick<Guitar, 'id' | 'name' | 'price' > & {
-//     quantity: number
-// }
-// export type CartItem = Omit<Guitar, 'id' | 'name' | 'price' > & {
-//     quantity: number
-// }
+export type CartItem = {
+    id: number; 
+    quantity: number;
+    item: Pokemon | PixabayImage; 
+};
+
+
+export type PixabayImage = {
+    id: number;
+    webformatURL: string;
+    tags: string;
+    precio:number;
+  };
+
 

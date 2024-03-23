@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Dispatch, useMemo, useState } from "react";
-import type { CartItem } from "../containers/index";
+import type {  Pokemon, PixabayImage,CartItem } from "../containers/index";
 import type { CartActions } from "../containers/reducers/cart-reducer";
 
 type HeaderProps = {
@@ -13,7 +13,16 @@ type HeaderProps = {
 export default function Header({ cart, dispatch }: HeaderProps) {
   // State Derivado
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
-  const cartTotal = useMemo(() => cart.reduce((total, item) => total + item.quantity * item.precio, 0),[cart]);
+  const cartTotal = useMemo(() => cart.reduce((total, cartItem) => {
+    // Función type guard para verificar si es un Pokemon
+    function isPokemon(item: Pokemon | PixabayImage): item is Pokemon {
+        return (item as Pokemon).precio !== undefined;
+    }
+
+    // Usar type guard para verificar y acceder a 'precio'
+    const itemPrecio = isPokemon(cartItem.item) ? cartItem.item.precio : 0;
+    return total + cartItem.quantity * itemPrecio;
+}, 0), [cart]);
 
   return (
     <header className="py-5 flex justify-around bg-slate-900">
@@ -24,7 +33,7 @@ export default function Header({ cart, dispatch }: HeaderProps) {
           </div>
           <nav className="md:ml-auto flex mt-5 md:mt-0">
             <div className="text-white ml-10">
-              <Link href={"/products"}>Productos Peliculas</Link>
+              <Link href={"/gifProducts"}>Productos Peliculas</Link>
             </div>
             <div className="text-white ml-10">
               <Link href={"/products"}>Productos Pokemon</Link>
