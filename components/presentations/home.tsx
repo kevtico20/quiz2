@@ -4,7 +4,10 @@ import Header from "./header";
 import Footer from "./footer";
 import { cartReducer, initialState } from "../containers/reducers/cart-reducer";
 import { useReducer, useEffect } from "react";
-
+const cartInitialState = () => {
+  const storedCart = localStorage.getItem('cart');
+  return storedCart ? JSON.parse(storedCart) : initialState;
+};
 const Index: React.FC = () => {
   const reviews = [
     {
@@ -19,7 +22,6 @@ const Index: React.FC = () => {
       review:
         "Estoy muy contento con mi compra. Las imágenes son hermosas y la entrega fue rápida.",
     },
-    // Agrega más reseñas según sea necesario
   ];
 
   const [state, dispatch] = useReducer(cartReducer, initialState);

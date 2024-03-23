@@ -1,5 +1,5 @@
 export type Pokemon = {
-    id: number; // Agregar ID único
+    id: number;
     nombre: string;
     vida: number;
     tipo: string;

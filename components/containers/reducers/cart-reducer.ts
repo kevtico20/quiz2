@@ -20,6 +20,7 @@ const initialCart = (): CartItem[] => {
     return localStorageCart ? JSON.parse(localStorageCart) : [];
 }
 
+
 // Estado inicial del carrito
 export const initialState: CartState = {
     data: pokemonDB, 

@@ -6,44 +6,59 @@ import Header from "../presentations/header";
 import Footer from "../presentations/footer";
 import SearchFilter from "../presentations/SearchFilter";
 import { cartReducer, initialState } from "../containers/reducers/cart-reducer";
-import pokemonDB,{ obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
+import { obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
 import { Pokemon } from "../containers";
 
 function ProductsIndex() {
+
+
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [filterText, setFilterText] = useState("");
   const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
+
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
-  useEffect(() => {
-    async function initialFetch() {
+
+
+ useEffect(() => {
+  async function initialFetch() {
+    let pokemons = JSON.parse(localStorage.getItem('pokemonDB') || '[]');
+    if (pokemons.length === 0) {
       try {
-        await obtenerTodosLosPokemon();
-        setFilteredPokemons(pokemonDB); // Inicialmente establecer todos los pokemones
-        setTotalPages(Math.ceil(pokemonDB.length / pageSize));
+        pokemons = await obtenerTodosLosPokemon(); // Esta función debe devolver los datos
+        localStorage.setItem('pokemonDB', JSON.stringify(pokemons));
       } catch (error) {
         console.error("Error al obtener datos de Pokémon:", error);
       }
     }
+    setAllPokemons(pokemons); // Guarda todos los pokemons en el estado.
+    setFilteredPokemons(pokemons); // Inicialmente, los pokemons filtrados son todos los pokemons.
+    setTotalPages(Math.ceil(pokemons.length / pageSize));
+  }
+  initialFetch();
+}, [pageSize]);
+  
+  
 
-    initialFetch();
-  }, []); // Dependencia vacía para correr solo al montar el componente
+const handleSearch = async () => {
+  const filtered = allPokemons.filter(pokemon =>
+    pokemon.nombre.toLowerCase().includes(filterText.toLowerCase())
+  );
 
-  const handleSearch = async () => {
-    // Filtrar pokemones basado en el texto de búsqueda
-    const filtered = pokemonDB.filter(pokemon =>
-      pokemon.nombre.toLowerCase().includes(filterText.toLowerCase())
-    );
-    setFilteredPokemons(filtered);
-    setTotalPages(Math.ceil(filtered.length / pageSize));
-    setCurrentPage(1); // Restablece a la primera página después de la búsqueda
-  };
+  setFilteredPokemons(filtered);
+  setTotalPages(Math.ceil(filtered.length / pageSize));
+  setCurrentPage(1);
+};
+
+
+
 
   const handleNextPage = () => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   const handlePrevPage = () => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -51,6 +66,10 @@ function ProductsIndex() {
   const indexOfLastProduct = currentPage * pageSize;
   const indexOfFirstProduct = indexOfLastProduct - pageSize;
   const currentProducts = filteredPokemons.slice(indexOfFirstProduct, indexOfLastProduct);
+
+
+
+
 
   return (
     <>

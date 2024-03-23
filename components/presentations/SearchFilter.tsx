@@ -6,6 +6,7 @@ type SearchFilterProps = {
 
 
 const SearchFilter: React.FC<SearchFilterProps> = ({ filterText, setFilterText, onSearch }) => {
+
   return (
     <div className="flex justify-center mt-5">
       <input
