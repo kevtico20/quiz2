@@ -26,7 +26,7 @@ const FloatingScreen: React.FC<FloatingScreenProps> = ({ onClose }) => {
         <p className="text-lg">Tu pedido ha sido confirmado.</p>
         <button
           className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-green-600"
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation(); // Evitar que el clic en el botón cierre la pantalla flotante
             onClose();
           }}
