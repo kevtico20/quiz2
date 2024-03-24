@@ -24,15 +24,15 @@ export default function Product({ poke, dispatch }: PokemonProps) {
               />
             </div>
             <div className="col-8">
-              <h3 className="text-white text-lg md:text-xl lg:text-2xl font-bold text-shadow">Name: {nombre}</h3>
+              <h3 className="text-white text-lg md:text-xl lg:text-2xl font-bold text-shadow capitalize">Nombre: {nombre}</h3>
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-b-lg">
-          <p className="text-gray-800"><span className="font-bold">Life:</span> {vida}</p>
-          <p className="text-gray-800"><span className="font-bold">Type:</span> {tipo}</p>
-          <p className="text-gray-800"><span className="font-bold">Attack:</span> {fuerza}</p>
-          <p className="text-lg font-bold text-gray-800">${precio}</p>
+          <p className="text-gray-800"><span className="font-bold">Vida:</span> {vida}</p>
+          <p className="text-gray-800"><span className="font-bold">Tipo:</span> {tipo}</p>
+          <p className="text-gray-800"><span className="font-bold">Ataque:</span> {fuerza}</p>
+          <p className="text-lg font-bold text-gray-800">Precio: ${precio}</p>
           <button
             type="button"
             className="mt-4 bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
