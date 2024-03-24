@@ -140,6 +140,12 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                 >
                   Vaciar Carrito
                 </button>
+                <button
+                  className="bg-green-600 btn btn-green w-full mt-3 p-2 transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-lime-500 hover:text-white focus:ring-green-400"
+                  onClick={() => dispatch({ type: "buy" })}
+                >
+                  Comprar
+                </button>
               </div>
             </div>
           </nav>

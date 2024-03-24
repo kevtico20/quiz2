@@ -6,7 +6,8 @@ export type CartActions =
     { type: 'remove-from-cart', payload: { id: Pokemon['id'] } } |
     { type: 'decrease-quantity', payload: { id: Pokemon['id']  } } |
     { type: 'increase-quantity', payload: { id: Pokemon['id']  } } |
-    { type: 'clear-cart' }
+    { type: 'clear-cart' } |
+    { type: 'buy' }
 
 // Define el estado del carrito
 export type CartState = {
@@ -96,6 +97,13 @@ export const cartReducer = (state: CartState = initialState, action: CartActions
         }
 
         case 'clear-cart': {
+            return {
+                ...state,
+                cart: [],
+            };
+        }
+
+        case 'buy': {
             return {
                 ...state,
                 cart: [],
