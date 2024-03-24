@@ -53,9 +53,9 @@ export default function Header({ cart, dispatch }: HeaderProps) {
       <div className="container">
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
-            <a className="text-white" href={"/"}>
+            <a className="text-white btn-home" href={"/"}>
               {" "}
-              Inicio
+              <img src="https://img.icons8.com/metro/48/bcbcbc/home.png" alt="home"/>
             </a>
           </div>
           <nav className="md:ml-auto flex mt-5 md:mt-0 items-center">

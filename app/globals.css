@@ -28,13 +28,6 @@ body {
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.5);
   }
 
-  .img-shadow-effect {
-   filter: drop-shadow(2px 2px 6px rgba(255, 255, 255, 0.75));
-  }
-
-  .text-shadow-effect {
-    text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.75);
-  }
   
   .carrito:hover #carrito {
     display: block;
@@ -62,3 +55,15 @@ body {
     margin: 0 3px;
   }
  
+  
+  .img-shadow-effect {
+   filter: drop-shadow(2px 2px 6px rgba(255, 255, 255, 0.75));
+  }
+
+  .text-shadow-effect {
+    text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.75);
+  }
+
+  .btn-home:hover{
+    filter: drop-shadow(2px 2px 6px rgba(255, 255, 255, 0.5));
+  }
