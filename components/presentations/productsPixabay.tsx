@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useRef } from "react";
 import Products from "../presentations/productsPi";
 import Header from "./header";
 import Footer from "./footer";
@@ -14,16 +14,27 @@ function ProductsPixabay() {
   const [pageSize, setPageSize] = useState(12);
   const [totalPages, setTotalPages] = useState(1);
   const [filteredPixa, setFilteredPixa] = useState<PixabayImage[]>([]);
-  const [pixaResults, setPixaResults] = useState([]);
+  const isFirstRun = useRef(true);
 
 
-useEffect(() => {
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(state.cart));
+  }, [state.cart]);
+
+  
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      initialFetch();
+    }
+  }, [pageSize]);
   async function initialFetch() {
     let pixa = JSON.parse(localStorage.getItem('pixaBay') || '[]');
     if (pixa.length === 0) {
       try {
         pixa = await buscarImagenes("yellow"); 
-        console.table(pixa)
+        console.table(pixa);
         localStorage.setItem('pixaBay', JSON.stringify(pixa));
       } catch (error) {
         console.error("Error al obtener datos de Pokémon:", error);
@@ -33,9 +44,6 @@ useEffect(() => {
     setFilteredPixa(pixa); 
     setTotalPages(Math.ceil(pixa.length / pageSize));
   }
-  initialFetch();
-}, [pageSize]);
-
 
   const handleNextPage = () =>
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));

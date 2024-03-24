@@ -30,7 +30,17 @@ export default function Header({ cart, dispatch }: HeaderProps) {
   };
   
   const getItemName = (cartItem: CartItem): string => {
-    return cartItem.type === "pokemon" ? cartItem.item.nombre : "Pixabay Image"; 
+    if (!cartItem.item) {
+      console.error('CartItem.item está indefinido.', cartItem);
+      return ''; // Retorna una cadena vacía si no hay item definido
+    }
+  
+    // Verifica si el tipo de item es "pokemon"
+    if (cartItem.type === "pokemon" && cartItem.item.nombre) {
+      return cartItem.item.nombre;
+    } else {
+      return "Pixabay Image"; // Si no es un Pokémon, asume que es una imagen de Pixabay
+    }
   };
   
   return (
