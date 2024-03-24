@@ -17,7 +17,10 @@ export type CartState = {
 
 // Función para inicializar el carrito desde el almacenamiento local
 const initialCart = (): CartItem[] => {
-  const localStorageCart = localStorage.getItem("cart");
+  let localStorageCart: string | null = null;
+    if (typeof window !== 'undefined') {
+        localStorageCart = localStorage.getItem('cart');
+    }
   return localStorageCart ? JSON.parse(localStorageCart) : [];
 };
 
