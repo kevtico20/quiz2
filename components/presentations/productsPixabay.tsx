@@ -1,33 +1,53 @@
 "use client";
-
 import { useState, useEffect, useReducer } from "react";
+import Products from "../presentations/productsPi";
 import Header from "./header";
 import Footer from "./footer";
 import { cartReducer, initialState } from "../containers/reducers/cart-reducer";
 import { buscarImagenes } from "../containers/apis/pixabay";
 import { PixabayImage } from "../containers";
-import ProductPi from "./productsPi";
 
-// Asume que buscarImagenes ya está adecuadamente implementado y devuelve un array de PixabayImage
 function ProductsPixabay() {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const [currentPage, setCurrentPage] = useState(1);
-  const [imagenes, setImagenes] = useState([]);
+  const [allPixa, setAllPixa] = useState<PixabayImage[]>([]);
+  const [pageSize, setPageSize] = useState(12);
+  const [totalPages, setTotalPages] = useState(1);
+  const [filteredPixa, setFilteredPixa] = useState<PixabayImage[]>([]);
+  const [pixaResults, setPixaResults] = useState([]);
 
-  // Efecto para cargar las imágenes al montar el componente
-  useEffect(() => {
-    const cargarImagenes = async () => {
+
+useEffect(() => {
+  async function initialFetch() {
+    let pixa = JSON.parse(localStorage.getItem('pixaBay') || '[]');
+    if (pixa.length === 0) {
       try {
-        const resultado = await buscarImagenes();
-        // Asumiendo que el resultado contiene un array de imágenes en resultado.hits
-        setImagenes(resultado.hits);
+        pixa = await buscarImagenes("yellow"); 
+        console.table(pixa)
+        localStorage.setItem('pixaBay', JSON.stringify(pixa));
       } catch (error) {
-        console.error("Error al cargar imágenes:", error);
+        console.error("Error al obtener datos de Pokémon:", error);
       }
-    };
+    }
+    setAllPixa(pixa); 
+    setFilteredPixa(pixa); 
+    setTotalPages(Math.ceil(pixa.length / pageSize));
+  }
+  initialFetch();
+}, [pageSize]);
 
-    cargarImagenes();
-  }, []); // El array vacío asegura que esto se ejecute solo una vez al montar el componente
+
+  const handleNextPage = () =>
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  const handlePrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+
+  const indexOfLastProduct = currentPage * pageSize;
+  const indexOfFirstProduct = indexOfLastProduct - pageSize;
+  const currentProducts = filteredPixa.slice(indexOfFirstProduct,indexOfLastProduct);
+
+
+
 
   return (
     <>
@@ -44,14 +64,15 @@ function ProductsPixabay() {
         <div className="flex justify-center">
           <div className="m-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {imagenes.map((poke) => (
-                <ProductPi key={poke.id} image={poke} />
+              {currentProducts.map((pixa) => (
+               
+                <Products key={pixa.id} pixa={pixa} dispatch={dispatch} />
               ))}
             </div>
           </div>
         </div>
         <div className="flex justify-center mt-5">
-          {/* <button
+          <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
             className="mx-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
@@ -64,7 +85,7 @@ function ProductsPixabay() {
             className="mx-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
           >
             Siguiente
-          </button> */}
+          </button>
         </div>
       </main>
       <Footer></Footer>

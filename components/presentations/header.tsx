@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Dispatch, useMemo, useState } from "react";
-import type { Pokemon, PixabayImage, CartItem } from "../containers/index";
+import { Dispatch, useMemo } from "react";
+import type { CartItem } from "../containers/index";
 import type { CartActions } from "../containers/reducers/cart-reducer";
 
 type HeaderProps = {
@@ -11,25 +11,28 @@ type HeaderProps = {
 };
 
 export default function Header({ cart, dispatch }: HeaderProps) {
-  // State Derivado
+
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
-  const cartTotal = useMemo(
-    () =>
-      cart.reduce((total, cartItem) => {
-        // Función type guard para verificar si es un Pokemon
-        function isPokemon(
-          item: Pokemon | PixabayImage | undefined
-        ): item is Pokemon {
-          return item !== undefined && (item as Pokemon).precio !== undefined;
-        }
+  const cartTotal = useMemo(() => cart.reduce((total: number, cartItem: CartItem) => {
+    const precio = cartItem.item && "precio" in cartItem.item ? cartItem.item.precio : 0;
+    return total + (precio * cartItem.quantity);
+  }, 0), [cart]);
 
-        // Usar type guard para verificar y acceder a 'precio'
-        const itemPrecio = isPokemon(cartItem.item) ? cartItem.item.precio : 0;
-        return total + cartItem.quantity * itemPrecio;
-      }, 0),
-    [cart]
-  );
 
+  const getImageUrl = (cartItem: CartItem): string => {
+    // Verifica si cartItem.item está definido antes de intentar acceder a webformatURL
+    if (!cartItem.item) {
+      console.error('CartItem.item está indefinido.', cartItem);
+      return ''; // Retorna una URL o un valor predeterminado si es necesario
+    }
+  
+    return cartItem.item.webformatURL; // Ambos tipos tienen webformatURL
+  };
+  
+  const getItemName = (cartItem: CartItem): string => {
+    return cartItem.type === "pokemon" ? cartItem.item.nombre : "Pixabay Image"; 
+  };
+  
   return (
     <header className="py-5 flex justify-around bg-slate-900">
       <div className="container">
@@ -72,17 +75,19 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                         </tr>
                       </thead>
                       <tbody>
-                        {cart.map((poke) => (
-                          <tr key={poke.id}>
+                        {cart.map((cartItem, index) => (
+                          <tr key={index}>
+                            {" "}
+                            {/* Usar index como key solo si no tienes mejor opción */}
                             <td>
                               <img
                                 className="w-20 h-auto"
-                                src={`${poke.imagen}`}
-                                alt="imagen guitarra"
+                                src={getImageUrl(cartItem)}
+                                alt="Imagen del producto"
                               />
                             </td>
-                            <td>{poke.nombre}</td>
-                            <td className="font-bold">${poke.precio}</td>
+                            <td>{getItemName(cartItem)}</td>
+                            <td className="font-bold">${cartItem.item?.precio}</td>
                             <td className="flex items-center mt-6 gap-4">
                               <button
                                 type="button"
@@ -90,20 +95,20 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                                 onClick={() =>
                                   dispatch({
                                     type: "decrease-quantity",
-                                    payload: { id: poke.id },
+                                    payload: { id: cartItem.id },
                                   })
                                 }
                               >
                                 -
                               </button>
-                              <span>{poke.quantity}</span>
+                              <span>{cartItem.quantity}</span>
                               <button
                                 type="button"
                                 className="btn btn-dark"
                                 onClick={() =>
                                   dispatch({
                                     type: "increase-quantity",
-                                    payload: { id: poke.id },
+                                    payload: { id: cartItem.id },
                                   })
                                 }
                               >
@@ -111,13 +116,14 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                               </button>
                             </td>
                             <td>
+                              {" "}
                               <button
                                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                                 type="button"
                                 onClick={() =>
                                   dispatch({
                                     type: "remove-from-cart",
-                                    payload: { id: poke.id },
+                                    payload: { id: cartItem.id },
                                   })
                                 }
                               >
@@ -139,12 +145,6 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                   onClick={() => dispatch({ type: "clear-cart" })}
                 >
                   Vaciar Carrito
-                </button>
-                <button
-                  className="bg-green-600 btn btn-green w-full mt-3 p-2 transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-lime-500 hover:text-white focus:ring-green-400"
-                  onClick={() => dispatch({ type: "buy" })}
-                >
-                  Comprar
                 </button>
               </div>
             </div>

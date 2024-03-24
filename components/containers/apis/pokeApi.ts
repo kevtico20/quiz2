@@ -23,7 +23,7 @@ export async function obtenerPokemon(nombrePokemon: string): Promise<Pokemon> {
             vida: data.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0,
             tipo: data.types.map(type => type.type.name).join(', '),
             fuerza: data.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0,
-            imagen: data.sprites.front_default || '',
+            webformatURL: data.sprites.front_default || '',
             precio: 10, 
         };
         pokemonDB.push(pokemon);

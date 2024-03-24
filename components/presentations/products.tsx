@@ -9,7 +9,7 @@ type PokemonProps = {
 };
 
 export default function Product({ poke, dispatch }: PokemonProps) {
-  const { nombre, vida, tipo, fuerza, imagen, precio } = poke;
+  const { nombre, vida, tipo, fuerza, webformatURL, precio } = poke;
   console.log(poke);
   return (
     <div className="col-md-6 col-lg-4 my-4">
@@ -19,7 +19,7 @@ export default function Product({ poke, dispatch }: PokemonProps) {
             <div className="col-4">
               <img
                 className="w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 xl:w-96 xl:h-96 2xl:w-120 2xl:h-120 mx-auto rounded-full border-4 border-white shadow-md"
-                src={`${imagen}`}
+                src={`${webformatURL}`}
                 alt="imagen"
               />
             </div>
