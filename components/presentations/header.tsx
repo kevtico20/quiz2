@@ -1,9 +1,10 @@
 "use client";
-
+import React, { useState } from "react";
 import Link from "next/link";
 import { Dispatch, useMemo } from "react";
 import type { CartItem } from "../containers/index";
 import type { CartActions } from "../containers/reducers/cart-reducer";
+import FloatingScreen from "./FloatingScreen";
 
 type HeaderProps = {
   cart: CartItem[];
@@ -46,6 +47,11 @@ export default function Header({ cart, dispatch }: HeaderProps) {
     } else {
       return "Pixabay Image"; // Si no es un Pokémon, asume que es una imagen de Pixabay
     }
+  };
+
+  const [showFloatingScreen, setShowFloatingScreen] = useState(false);
+  const closeFloatingScreen = () => {
+    setShowFloatingScreen(false);
   };
 
   return (
@@ -188,10 +194,18 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                 </button>
                 <button
                   className="bg-green-600 btn btn-green w-full mt-3 p-2 transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-lime-500 hover:text-white focus:ring-green-400"
-                  onClick={() => dispatch({ type: "buy" })}
+                  onClick={() => {
+                    dispatch({ type: "buy" });
+                    setShowFloatingScreen(true); // Mostrar la pantalla flotante al hacer clic en "Comprar"
+                  }}
                 >
                   Comprar
                 </button>
+
+                {/* Mostrar la pantalla flotante si showFloatingScreen es true */}
+                {showFloatingScreen && (
+                  <FloatingScreen onClose={closeFloatingScreen} />
+                )}
               </div>
             </div>
           </nav>
