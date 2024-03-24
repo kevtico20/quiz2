@@ -6,7 +6,8 @@ export type CartActions = | { type: "add-to-cart"; payload: { item: PixabayImage
                           | {type: "remove-from-cart";payload: { id: Pokemon["id"] | PixabayImage["id"] };}
                           | {type: "decrease-quantity";payload: { id: Pokemon["id"] | PixabayImage["id"] };} 
                           | {type: "increase-quantity";payload: { id: Pokemon["id"] | PixabayImage["id"] };}
-                          | { type: "clear-cart" };
+                          | { type: "clear-cart" }
+                          | { type: 'buy' };
 
 // Define el estado del carrito
 export type CartState = {

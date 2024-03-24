@@ -55,7 +55,10 @@ export default function Header({ cart, dispatch }: HeaderProps) {
           <div className="flex-shrink-0">
             <a className="text-white btn-home" href={"/"}>
               {" "}
-              <img src="https://img.icons8.com/metro/48/bcbcbc/home.png" alt="home"/>
+              <img
+                src="https://img.icons8.com/metro/48/bcbcbc/home.png"
+                alt="home"
+              />
             </a>
           </div>
           <nav className="md:ml-auto flex mt-5 md:mt-0 items-center">
@@ -102,7 +105,9 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                                 alt="Imagen del producto"
                               />
                             </td>
-                            <td className="capitalize">{getItemName(cartItem)}</td>
+                            <td className="capitalize">
+                              {getItemName(cartItem)}
+                            </td>
                             <td className="text-xl">
                               ${cartItem.item?.precio}
                             </td>
@@ -180,6 +185,12 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                   onClick={() => dispatch({ type: "clear-cart" })}
                 >
                   Vaciar Carrito
+                </button>
+                <button
+                  className="bg-green-600 btn btn-green w-full mt-3 p-2 transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-lime-500 hover:text-white focus:ring-green-400"
+                  onClick={() => dispatch({ type: "buy" })}
+                >
+                  Comprar
                 </button>
               </div>
             </div>
