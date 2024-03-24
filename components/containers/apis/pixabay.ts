@@ -38,7 +38,6 @@ export async function buscarImagenes(query: string): Promise<PixabayImage[]> {
         newImages.push(pix);
       }
     }
-    console.log("{",newImages)
     return newImages;
   } catch (error) {
     console.error("Error al buscar imágenes en Pixabay:", error);

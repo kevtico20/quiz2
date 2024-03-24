@@ -4,7 +4,7 @@ export type Pokemon = {
     vida: number;
     tipo: string;
     fuerza: number;
-    imagen: string;
+    webformatURL: string;
     precio: number;
 }
 export interface PokemonData {
@@ -16,10 +16,12 @@ export interface PokemonData {
     };
 }
 
-export type CartItem = (Pokemon | PixabayImage) & {
+export type CartItem = {
+    id: number; 
+    type: 'pokemon' | 'pixabayImage';
+    item: Pokemon | PixabayImage;
     quantity: number;
 };
-
 
 
 export type PixabayImage = {

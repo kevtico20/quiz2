@@ -11,7 +11,6 @@ type PixaProps = {
 export default function Products({ pixa, dispatch }: PixaProps) {
 
   const { id,webformatURL,tags,precio } = pixa;
-  console.table(pixa)
   return (
     <div className="col-md-6 col-lg-4 my-4">
       <div className="card shadow-lg border-0 rounded-lg transform transition hover:scale-105 duration-300">

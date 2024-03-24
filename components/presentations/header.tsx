@@ -12,6 +12,9 @@ type HeaderProps = {
 
 export default function Header({ cart, dispatch }: HeaderProps) {
 
+
+  console.table(cart)
+
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
   const cartTotal = useMemo(() => cart.reduce((total: number, cartItem: CartItem) => {
     const precio = cartItem.item && "precio" in cartItem.item ? cartItem.item.precio : 0;
