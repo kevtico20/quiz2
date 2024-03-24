@@ -53,7 +53,7 @@ export default function Header({ cart, dispatch }: HeaderProps) {
   const closeFloatingScreen = () => {
     setShowFloatingScreen(false);
   };
-
+  const disabledBuyButton = isEmpty ? true : false;
   return (
     <header className="py-1 flex justify-around bg-slate-900">
       <div className="container">
@@ -198,13 +198,15 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                     dispatch({ type: "buy" });
                     setShowFloatingScreen(true); // Mostrar la pantalla flotante al hacer clic en "Comprar"
                   }}
+                  disabled={disabledBuyButton}
                 >
                   Comprar
                 </button>
-
               </div>
             </div>
-            {showFloatingScreen && <FloatingScreen onClose={closeFloatingScreen} />}
+            {showFloatingScreen && (
+              <FloatingScreen onClose={closeFloatingScreen} />
+            )}
           </nav>
         </div>
       </div>
