@@ -69,10 +69,10 @@ export default function Header({ cart, dispatch }: HeaderProps) {
           </div>
           <nav className="md:ml-auto flex mt-5 md:mt-0 items-center">
             <div className="text-white ml-10 hover:underline">
-              <Link href={"/gifProducts"}>Productos Naturaleza</Link>
+              <a href={"/gifProducts"}>Productos Naturaleza</a>
             </div>
             <div className="text-white ml-10 hover:underline">
-              <Link href={"/products"}>Productos Pokemon</Link>
+              <a href={"/products"}>Productos Pokemon</a>
             </div>
             <div className="carrito relative ms-14">
               <img

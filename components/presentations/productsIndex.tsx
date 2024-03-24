@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Product from "../presentations/products";
 import Header from "../presentations/header";
 import Footer from "../presentations/footer";
@@ -10,8 +10,6 @@ import { obtenerTodosLosPokemon } from "../containers/apis/pokeApi";
 import { Pokemon } from "../containers";
 
 function ProductsIndex() {
-
-
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
@@ -20,52 +18,55 @@ function ProductsIndex() {
   const [totalPages, setTotalPages] = useState(1);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
 
-
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
-
-
- useEffect(() => {
-  async function initialFetch() {
-    let pokemons = JSON.parse(localStorage.getItem('pokemonDB') || '[]');
-    if (pokemons.length === 0) {
-      try {
-        pokemons = await obtenerTodosLosPokemon(); // Esta función debe devolver los datos
-        localStorage.setItem('pokemonDB', JSON.stringify(pokemons));
-      } catch (error) {
-        console.error("Error al obtener datos de Pokémon:", error);
+  useEffect(() => {
+    async function initialFetch() {
+      let pokemons = JSON.parse(localStorage.getItem("pokemonDB") || "[]");
+      if (pokemons.length === 0) {
+        try {
+          pokemons = await obtenerTodosLosPokemon();
+          localStorage.setItem("pokemonDB", JSON.stringify(pokemons));
+        } catch (error) {
+          console.error("Error al obtener datos de Pokémon:", error);
+        }
       }
+      setAllPokemons(pokemons);
+      setFilteredPokemons(pokemons);
+      setTotalPages(Math.ceil(pokemons.length / pageSize));
     }
-    setAllPokemons(pokemons); // Guarda todos los pokemons en el estado.
-    setFilteredPokemons(pokemons); // Inicialmente, los pokemons filtrados son todos los pokemons.
-    setTotalPages(Math.ceil(pokemons.length / pageSize));
-  }
-  initialFetch();
-}, [pageSize]);
+    initialFetch();
+  }, [pageSize]);
+
+  const handleSearch = async () => {
+    const filtered = allPokemons.filter((pokemon) =>
+      pokemon.nombre.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    setFilteredPokemons(filtered);
+    setTotalPages(Math.ceil(filtered.length / pageSize));
+    setCurrentPage(1);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   
-  
-
-const handleSearch = async () => {
-  const filtered = allPokemons.filter(pokemon =>
-    pokemon.nombre.toLowerCase().includes(filterText.toLowerCase())
-  );
-
-  setFilteredPokemons(filtered);
-  setTotalPages(Math.ceil(filtered.length / pageSize));
-  setCurrentPage(1);
-};
-
-
-
-
-  const handleNextPage = () => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  const handlePrevPage = () => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll hasta arriba
+  };
 
   const indexOfLastProduct = currentPage * pageSize;
   const indexOfFirstProduct = indexOfLastProduct - pageSize;
-  const currentProducts = filteredPokemons.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredPokemons.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
   return (
     <>
       <Header cart={state.cart} dispatch={dispatch} />

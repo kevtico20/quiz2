@@ -5,12 +5,10 @@ import type { CartActions } from "../containers/reducers/cart-reducer";
 type PixaProps = {
   pixa: PixabayImage;
   dispatch: Dispatch<CartActions>;
-  
 };
 
 export default function Products({ pixa, dispatch }: PixaProps) {
-
-  const { id,webformatURL,tags,precio } = pixa;
+  const { id, webformatURL, tags, precio } = pixa;
   return (
     <div className="col-md-6 col-lg-4 my-4">
       <div className="card shadow-lg border-0 rounded-lg transform transition hover:scale-105 duration-300">
@@ -24,12 +22,16 @@ export default function Products({ pixa, dispatch }: PixaProps) {
               />
             </div>
             <div className="col-8">
-              <h3 className="text-white text-lg md:text-xl lg:text-2xl font-bold text-shadow">Name: Usuario</h3>
+              <h3 className="text-white text-lg md:text-xl lg:text-2xl font-bold text-shadow">
+                Name: Usuario
+              </h3>
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-b-lg">
-          <p className="text-gray-800"><span className="font-bold">Tags:</span> {tags}</p>
+          <p className="text-gray-800">
+            <span className="font-bold">Tags:</span> {tags}
+          </p>
           <p className="text-lg font-bold text-gray-800">${precio}</p>
           <button
             type="button"
