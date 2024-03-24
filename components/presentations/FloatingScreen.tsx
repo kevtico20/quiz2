@@ -13,12 +13,13 @@ const FloatingScreen: React.FC<FloatingScreenProps> = ({ onClose }) => {
   };
 
   return (
-    <div
-      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
-      onClick={onClose} // Cerrar la pantalla flotante al hacer clic fuera de ella
-    >
+    <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center">
       <div
-        className="bg-white p-8 rounded-lg shadow-lg"
+        className="bg-black bg-opacity-50 absolute inset-0"
+        onClick={onClose} // Cerrar la pantalla flotante al hacer clic fuera de ella
+      />
+      <div
+        className="bg-white p-8 rounded-lg shadow-lg z-10"
         onClick={handleClick} // Manejar el clic dentro de la pantalla flotante
       >
         <h2 className="text-2xl font-bold mb-4">¡Gracias por tu compra!</h2>

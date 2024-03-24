@@ -202,12 +202,9 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                   Comprar
                 </button>
 
-                {/* Mostrar la pantalla flotante si showFloatingScreen es true */}
-                {showFloatingScreen && (
-                  <FloatingScreen onClose={closeFloatingScreen} />
-                )}
               </div>
             </div>
+            {showFloatingScreen && <FloatingScreen onClose={closeFloatingScreen} />}
           </nav>
         </div>
       </div>
