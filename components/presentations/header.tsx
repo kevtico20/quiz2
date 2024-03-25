@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { Dispatch, useMemo } from "react";
 import type { CartItem } from "../containers/index";
 import type { CartActions } from "../containers/reducers/cart-reducer";
@@ -12,8 +11,8 @@ type HeaderProps = {
 };
 
 export default function Header({ cart, dispatch }: HeaderProps) {
-  console.table(cart);
-
+  const [showFloatingScreen, setShowFloatingScreen] = useState(false);
+  const [disabledBuyButton, setDisabledBuyButton] = useState(false);
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
   const cartTotal = useMemo(
     () =>
@@ -25,38 +24,35 @@ export default function Header({ cart, dispatch }: HeaderProps) {
     [cart]
   );
 
+  const totalUniqueItemsInCart = useMemo(() => {
+    return cart.length; // Cada elemento en 'cart' es un producto único
+  }, [cart]);
   const getImageUrl = (cartItem: CartItem): string => {
-    // Verifica si cartItem.item está definido antes de intentar acceder a webformatURL
     if (!cartItem.item) {
       console.error("CartItem.item está indefinido.", cartItem);
-      return ""; // Retorna una URL o un valor predeterminado si es necesario
+      return "";
     }
 
-    return cartItem.item.webformatURL; // Ambos tipos tienen webformatURL
+    return cartItem.item.webformatURL;
   };
 
   const getItemName = (cartItem: CartItem): string => {
     if (!cartItem.item) {
       console.error("CartItem.item está indefinido.", cartItem);
-      return ""; // Retorna una cadena vacía si no hay item definido
+      return "";
     }
 
-    // Verifica si el tipo de item es "pokemon"
     if (cartItem.type === "pokemon" && cartItem.item.nombre) {
       return cartItem.item.nombre;
     } else {
-      return "Pixabay Image"; // Si no es un Pokémon, asume que es una imagen de Pixabay
+      return "Pixabay Image";
     }
   };
-
-  const [showFloatingScreen, setShowFloatingScreen] = useState(false);
-  const [disabledBuyButton, setDisabledBuyButton] = useState(false);
 
   const handleBuyClick = () => {
     if (!isEmpty) {
       setDisabledBuyButton(true);
 
-      // Simular un tiempo de carga antes de mostrar la pantalla flotante
       setTimeout(() => {
         dispatch({ type: "buy" });
         setShowFloatingScreen(true);
@@ -96,6 +92,11 @@ export default function Header({ cart, dispatch }: HeaderProps) {
                 src="https://img.icons8.com/stickers/56/shopping-cart.png"
                 alt="shopping-cart"
               />
+              {totalUniqueItemsInCart > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center text-xs">
+                  {totalUniqueItemsInCart}
+                </span>
+              )}
               <div
                 id="carrito"
                 className="bg-white p-3 absolute top-full right-0 hidden"

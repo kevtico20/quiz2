@@ -62,10 +62,7 @@ function ProductsIndex() {
 
   const indexOfLastProduct = currentPage * pageSize;
   const indexOfFirstProduct = indexOfLastProduct - pageSize;
-  const currentProducts = filteredPokemons.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const currentProducts = filteredPokemons.slice(indexOfFirstProduct,indexOfLastProduct);
 
   return (
     <>
