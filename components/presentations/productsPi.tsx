@@ -23,7 +23,7 @@ export default function Products({ pixa, dispatch }: PixaProps) {
             </div>
             <div className="col-8">
               <h3 className="text-white text-lg md:text-xl lg:text-2xl font-bold text-shadow">
-                Name: Usuario
+                Name: Picture
               </h3>
             </div>
           </div>

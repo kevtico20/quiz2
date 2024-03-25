@@ -4,9 +4,11 @@ type SearchFilterProps = {
   onSearch: () => void; // Asume que onSearch no toma ningún argumento y no retorna nada
 };
 
-
-const SearchFilter: React.FC<SearchFilterProps> = ({ filterText, setFilterText, onSearch }) => {
-
+const SearchFilter: React.FC<SearchFilterProps> = ({
+  filterText,
+  setFilterText,
+  onSearch,
+}) => {
   return (
     <div className="flex justify-center mt-5">
       <input
@@ -24,6 +26,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ filterText, setFilterText, 
       </button>
     </div>
   );
-}
+};
 
 export default SearchFilter;

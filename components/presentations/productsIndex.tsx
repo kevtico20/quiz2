@@ -54,7 +54,7 @@ function ProductsIndex() {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  
+
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll hasta arriba
