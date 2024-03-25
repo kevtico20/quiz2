@@ -1,5 +1,5 @@
 "use client";
-
+import SearchFilter from "../presentations/SearchFilter";
 import React, { useState, useEffect, useReducer, useRef } from "react";
 import Products from "../presentations/productsPi";
 import Header from "./header";
@@ -16,6 +16,8 @@ function ProductsPixabay() {
   const [totalPages, setTotalPages] = useState(1);
   const [filteredPixa, setFilteredPixa] = useState<PixabayImage[]>([]);
   const isFirstRun = useRef(true);
+  const [filterText, setFilterText] = useState("");
+
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
@@ -44,6 +46,17 @@ function ProductsPixabay() {
     setTotalPages(Math.ceil(pixa.length / pageSize));
   }
 
+
+  const handleSearch = async () => {
+    const filtered = allPixa.filter((pixa) =>
+    pixa.tags.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    setFilteredPixa(filtered);
+    setTotalPages(Math.ceil(filtered.length / pageSize));
+    setCurrentPage(1);
+  };
+
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -68,6 +81,11 @@ function ProductsPixabay() {
         <h2 className="text-center text-4xl lg:text-5xl font-black uppercase tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-red-500 to-blue-500">
           Galería Artística
         </h2>
+        <SearchFilter
+          filterText={filterText}
+          setFilterText={setFilterText}
+          onSearch={handleSearch}
+        />
         <div className="flex justify-center">
           <div className="m-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
