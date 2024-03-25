@@ -125,6 +125,12 @@ export const cartReducer = (
         cart: [],
       };
     }
+    case "buy":{
+      return{
+        ...state,
+        cart:[],
+      }
+    }
 
     default:
       return state;
